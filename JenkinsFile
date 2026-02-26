@@ -1,20 +1,34 @@
 pipeline {
     agent any
-    
-    stages{
-        stage('build'){
-            steps{
-                echo 'Building the application'
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/SrishtikSekar/JenkinsDemo.git'
             }
         }
-        stage('Test'){
-            steps{
-                echo 'Testing the application'
+
+        stage('Install') {
+            steps {
+                sh 'npm install'
             }
         }
-        stage('Deploy'){
-            steps{
-                echo 'Deploying the application'
+
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm run test'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: '**/*.*', fingerprint: true
             }
         }
     }
